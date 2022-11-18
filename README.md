@@ -37,6 +37,7 @@ matching groups.
 28: "variable name"  
 
 # example output of lexer.py
+```
 Next lexeme is: start     Next token is ( 0) program beginning  
 Next lexeme is: tiny      Next token is ( 2) 1 byte integer declaration  
 Next lexeme is: var_aa    Next token is (28) variable name  
@@ -70,4 +71,5 @@ Next lexeme is: var_aa    Next token is (28) variable name
 Next lexeme is: <=        Next token is (15) lessthan or equal  
 Next lexeme is: 100       Next token is (27) integer  
 Next lexeme is: )         Next token is (23) right paren  
-Next lexeme is: finish    Next token is ( 1) program ending  
+Next lexeme is: finish    Next token is ( 1) program ending
+```
