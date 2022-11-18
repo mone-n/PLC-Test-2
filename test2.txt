@@ -1,0 +1,7 @@
+start
+  tiny var_aa|
+  var_aa = ( 1 + 2 / 3 ) % 12 / 2|
+  perform {
+    var_aa = var_aa + 1|
+  } conloop ( var_aa <= 100 )
+finish
