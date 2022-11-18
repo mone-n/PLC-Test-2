@@ -1,0 +1,13 @@
+start
+  tiny var_aa|
+  medi var_ab|
+  big var_ac|
+  huge var_ad|
+  var_ad = ( 1 + 2 / 3 ) % 12 / 2|
+  perform {
+    var_aa = var_aa + 1|
+    ? (var_aa == 5) {
+      var_ad = 99999|
+    }
+  } conloop ( var_ad <= 10000 )
+finish
