@@ -41,7 +41,7 @@ separator.
 28: "variable"  
 
 # production rules
-
+```
 &lt;block&gt; --> 'start' {&lt;statement&gt;} 'end'  
 &lt;statement&gt; --> &lt;if&gt; | &lt;while&gt; | &lt;do&gt; |&lt;initialize&gt; | &lt;assignment&gt;  
 &lt;if&gt; --> '?' '(' &lt;bool_relation&gt; ')' '{' {&lt;statement&gt;} '}'  
@@ -55,7 +55,7 @@ separator.
 &lt;term&gt; --> &lt;bnot&gt; {'+'|'-'|'^' &lt;bnot&gt;}  
 &lt;bnot&gt; --> [!] &lt;factor&gt;  
 &lt;bool_relation&gt; --> [0-9]+ | [a-zA-Z_]{6,8} | '(' &lt;bexpr&gt; ')'  
-
+```
 # example valid output of lexical processor
 ```
 Lexeme at index  0 is: start     Token is ( 0) program beginning
