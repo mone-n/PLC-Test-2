@@ -54,7 +54,14 @@ separator.
 &lt;expr&gt; --> &lt;term&gt; {'\*'|'/'|'%' &lt;term&gt;}  
 &lt;term&gt; --> &lt;bnot&gt; {'+'|'-'|'^' &lt;bnot&gt;}  
 &lt;bnot&gt; --> [!] &lt;factor&gt;  
-&lt;bool_relation&gt; --> [0-9]+ | [a-zA-Z_]{6,8} | '(' &lt;bexpr&gt; ')'  
+&lt;factor&gt; --> [0-9]+ | [a-zA-Z_]{6,8} | '(' &lt;bexpr&gt; ')'  
+  
+order of operations is PASEMDO (parentheses, addition, subtraction,  
+exponent, multiply, divide, modulus)
+
+# LL grammar
+
+![LL Table](https://github.com/mone-n/PLC-Test-2/blob/main/LL_Table.png?raw=true)
 
 # example valid output of lexical processor
 ```
