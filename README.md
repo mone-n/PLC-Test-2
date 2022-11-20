@@ -169,8 +169,74 @@ syntax analysis passed
 
 # LR(1) Parse Table
 
+```
+BLOCK -> start STATEMENT end
+STATEMENT -> IF
+STATEMENT -> IF STATEMENT
+STATEMENT -> WHILE
+STATEMENT -> WHILE STATEMENT
+STATEMENT -> DO
+STATEMENT -> DO STATEMENT
+STATEMENT -> INIT
+STATEMENT -> INIT STATEMENT
+STATEMENT -> ASSIGN
+STATEMENT -> ASSIGN STATEMENT
+IF -> ? ( BEXPR ) { STATEMENT }
+WHILE -> conloop ( BEXPR ) { STATEMENT }
+DO -> perform { STATEMENT } ( BEXPR )
+INIT -> tiny var |
+INIT -> medi var |
+INIT -> big var |
+INIT -> huge var |
+ASSIGN -> var = EXPR |
+BEXPR -> BREL == BREL
+BEXPR -> BREL != BREL
+BEXPR -> BREL
+BREL -> EXPR <= EXPR
+BREL -> EXPR >= EXPR
+BREL -> EXPR < EXPR
+BREL -> EXPR > EXPR
+BREL -> EXPR
+EXPR -> TERM % TERM
+EXPR -> TERM * TERM
+EXPR -> TERM / TERM
+EXPR -> TERM
+TERM -> BNOT + BNOT
+TERM -> BNOT - BNOT
+TERM -> BNOT ^ BNOT
+TERM -> BNOT
+BNOT -> ! FACTOR
+BNOT -> FACTOR
+FACTOR -> 5
+FACTOR -> var
+FACTOR -> ( BEXPR )
+```
+
 ![LR Table 1](./LR_Table_1.PNG)  
 ![LR Table 2](./LR_Table_2.PNG)  
 ![LR Table 3](./LR_Table_3.PNG)  
 ![LR Table 4](./LR_Table_4.PNG)  
 ![LR Table 5](./LR_Table_5.PNG)  
+
+# Traces
+
+![LR Trace 1](./LR_Trace_1.PNG)  
+Valid Trace, all tokens are accepted by the parser  
+  
+![LR Trace 2](./LR_Trace_2.PNG)  
+![LR Trace 2](./LR_Trace_2_1.PNG)  
+Valid Trace, all tokens are accepted by the parser  
+  
+![LR Trace 3](./LR_Trace_3.PNG)  
+Valid Trace, all tokens are accepted by the parser  
+  
+![LR Trace 4](./LR_Trace_4.PNG)  
+This Trace fails when the parser expects a | symbol  
+but is instead met with an assignment symbol (=).  
+variable initialization and assignment must be on  
+different lines.  
+  
+![LR Trace 5](./LR_Trace_5.PNG)  
+This Trace fails when the parser expects a { symbol
+but instead finds 'end', if statements require braces  
+with statements inside.
