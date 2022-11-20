@@ -166,3 +166,11 @@ Lexeme at index 31 is: }         Token is (26) right bracket
 Lexeme at index 32 is: end       Token is ( 1) program ending
 syntax analysis passed
 ```
+
+# LR(1) Parse Table
+
+![LR Table 1](./LR_Table_1.PNG)  
+![LR Table 2](./LR_Table_2.PNG)  
+![LR Table 3](./LR_Table_3.PNG)  
+![LR Table 4](./LR_Table_4.PNG)  
+![LR Table 5](./LR_Table_5.PNG)  
