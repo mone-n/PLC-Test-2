@@ -61,7 +61,7 @@ exponent, multiply, divide, modulus)
 
 # LL grammar
 
-![LL Table](./LL_Table.PNG)  
+![LL Table](./img/LL_Table.PNG)  
 in the above image I have created a LL(1) table showing that there are no  
 FIRST/FIRST or FIRST/FOLLOW errors. There is at most 1 production in each  
 table entry. 
@@ -72,14 +72,14 @@ Since the grammar is an LL(1) grammar, it is unabmiguous by definition.
 
 # LEXEME PROCESSOR
 
-![lexer.py](./lexer.py) is a program that processes all lexemes in a  
+![lexer.py](./img/lexer.py) is a program that processes all lexemes in a  
 given file and produces a list of all lexemes in order, along with  
 their token codes and definitions. Examples of a valid and a failed  
 input are shown below. 
 
 # SYNTAX ANALYZER
 
-![syntax_analyzer.py](./syntax_analyzer.py) is a program that is  
+![syntax_analyzer.py](./img/syntax_analyzer.py) is a program that is  
 automatically called when the lexer succedes. It checks if the program  
 is valid syntactically, and throws an error when it detects an  
 invalid program.
@@ -212,33 +212,33 @@ FACTOR -> var
 FACTOR -> ( BEXPR )
 ```
 
-![LR Table 1](./LR_Table_1.PNG)  
-![LR Table 2](./LR_Table_2.PNG)  
-![LR Table 3](./LR_Table_3.PNG)  
-![LR Table 4](./LR_Table_4.PNG)  
-![LR Table 5](./LR_Table_5.PNG)  
-![LR Table 4](./LR_Table_6.PNG)  
-![LR Table 5](./LR_Table_7.PNG)  
-![LR Table 5](./LR_Table_8.PNG)  
+![LR Table 1](./img/LR_Table_1.PNG)  
+![LR Table 2](./img/LR_Table_2.PNG)  
+![LR Table 3](./img/LR_Table_3.PNG)  
+![LR Table 4](./img/LR_Table_4.PNG)  
+![LR Table 5](./img/LR_Table_5.PNG)  
+![LR Table 4](./img/LR_Table_6.PNG)  
+![LR Table 5](./img/LR_Table_7.PNG)  
+![LR Table 5](./img/LR_Table_8.PNG)  
 # Traces
 
-![LR Trace 1](./LR_Trace_1.PNG)  
+![LR Trace 1](./img/LR_Trace_1.PNG)  
 Valid Trace, all tokens are accepted by the parser  
   
-![LR Trace 2](./LR_Trace_2.PNG)  
-![LR Trace 2](./LR_Trace_2_1.PNG)  
+![LR Trace 2](./img/LR_Trace_2.PNG)  
+![LR Trace 2](./img/LR_Trace_2_1.PNG)  
 Valid Trace, all tokens are accepted by the parser  
   
-![LR Trace 3](./LR_Trace_3.PNG)  
+![LR Trace 3](./img/LR_Trace_3.PNG)  
 Valid Trace, all tokens are accepted by the parser  
   
-![LR Trace 4](./LR_Trace_4.PNG)  
+![LR Trace 4](./img/LR_Trace_4.PNG)  
 This Trace fails when the parser expects a | symbol  
 but is instead met with an assignment symbol (=).  
 variable initialization and assignment must be on  
 different lines.  
   
-![LR Trace 5](./LR_Trace_5.PNG)  
+![LR Trace 5](./img/LR_Trace_5.PNG)  
 This Trace fails when the parser expects a { symbol
 but instead finds 'end', if statements require braces  
 with statements inside.
