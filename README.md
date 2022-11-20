@@ -217,7 +217,9 @@ FACTOR -> ( BEXPR )
 ![LR Table 3](./LR_Table_3.PNG)  
 ![LR Table 4](./LR_Table_4.PNG)  
 ![LR Table 5](./LR_Table_5.PNG)  
-
+![LR Table 4](./LR_Table_6.PNG)  
+![LR Table 5](./LR_Table_7.PNG)  
+![LR Table 5](./LR_Table_8.PNG)  
 # Traces
 
 ![LR Trace 1](./LR_Trace_1.PNG)  
