@@ -61,7 +61,7 @@ exponent, multiply, divide, modulus)
 
 # LL grammar
 
-![LL Table](https://github.com/mone-n/PLC-Test-2/blob/main/LL_Table.png?raw=true)
+![LL Table](./LL_Table.PNG)
 
 # example valid output of lexical processor
 ```
