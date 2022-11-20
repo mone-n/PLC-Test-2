@@ -1,0 +1,7 @@
+start
+  huge variable|
+  variable = 0|
+  conloop (variable < 12345) {
+    variable = variable + (variable * 8 % (37 - variable))|
+  }
+end

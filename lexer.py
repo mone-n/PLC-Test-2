@@ -1,10 +1,8 @@
 import re
-from collections import defaultdict
+from syntax_analyzer import RDA
 
 def main():
-	tokens = defaultdict(list)
-	test_1 = open("test2.txt", "r")
-
+	# dictionary defining each token code 
 	token_definitions = {
 		0 : "program beginning",
 		1 : "program ending",
@@ -34,26 +32,80 @@ def main():
 		25: "left bracket",
 		26: "right bracket",
 		27: "integer",
-		28: "variable name"
+		28: "variable"
 	}
+
+	# initialize list of tokens
+	tokens = []
+
+	# get the code file to be tested
+	test_1 = open("test4.txt", "r")
 	
-	symbols = ["(start)", "(finish)", "(tiny)", "(medi)", "(big)", "(huge)",
-	 "(conloop)", "(forloop)", "(perform)", "(\?)"]
+	# regex separated into individual matching groups for readability
+	# each group directly corresponds to a single token code
+	symbols = ["(start)", "(end)", "(tiny)", "(medi)", "(big)", "(huge)",
+	 "(conloop)", "(forloop)", "(perform)", "(\?)", "(\+)", "(-)", "(\*)",
+	 "(\/)", "(%)", "(<=)", "(>=)", "(<)", "(>)", "(==)", "(\!=)", "(=)",
+	 "(\()", "(\))", "(\|)", "(\{)", "(\})", "([0-9]+)", "([a-zA-Z_]{6,8})"]
 
-	symbols += ["(\+)", "(-)", "(\*)", "(\/)", "(%)", "(<=)", "(>=)", "(<)", "(>)", "(==)",
-	 "(\!=)", "(=)", "(\()", "(\))", "(\|)", "(\{)", "(\})", "([0-9]+)", "([a-zA-Z_]{6,8})"]
+	# read the test code file
+	file = test_1.read()
 
+	# combine the separate regex groups into one regex pattern
 	pattern = "|".join(symbols)
-	result = re.findall(pattern, test_1.read())
 
-	for match in result:
-		token = next(s for s in match if s)
-		print("Next lexeme is: {:10s}Next token is ({:2d}) {:s}".format(
-			token,
-			match.index(token),
-			token_definitions[match.index(token)]
+	
+	lexeme_index = 0
+	
+	# re.match gets the first match in a string. so this gets
+	# the first match
+	match = re.match(pattern, file)
+
+	# individually read the next token and determine if it is a valid
+	# token until EOF is reached.
+	while match is not None and match[0]:
+
+		# replace the current match with nothing
+		file = file.replace(match[0], '', 1)
+
+		# then remove whitespace at the front of the string
+		file = file.lstrip()
+
+		# add the current token to the tokens list
+		tokens.append(match[0])
+
+		# print current token in the format:
+		# Lexeme at index  1 is var_name  Next token is (28) variable
+		print("Lexeme at index {:2d} is: {:10s}Token is ({:2d}) {:s}".format(
+			lexeme_index,
+			match[0],
+			match.groups().index(match[0]),
+			token_definitions[match.groups().index(match[0])]
 			)
 		)
+
+		# increment lexeme index
+		lexeme_index += 1
+
+		# get the next token if any
+		match = re.match(pattern, file)
+	
+	# since re.match only matches at the beginning of a string
+	# it will return null when an invalid token is processed,
+	# and break the while loop above.
+	# If the while loop condition fails early, a token at the
+	# current index is invalid
+	if len(file) > 0:
+		print("lexeme at index {:2d} is invalid\n".format(len(tokens)))
+
+	# otherwise, all lexemes are valid, and the syntax_analyzer
+	# can be run.
+	else:
+		syntax_analyzer = RDA(tokens)
+		if syntax_analyzer.validated:
+			print("syntax analysis passed")
+		else:
+			print("syntax analysis failed")
 
 
 

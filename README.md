@@ -61,7 +61,28 @@ exponent, multiply, divide, modulus)
 
 # LL grammar
 
-![LL Table](./LL_Table.PNG)
+![LL Table](./LL_Table.PNG)  
+in the above image I have created a LL(1) table showing that there are no  
+FIRST/FIRST or FIRST/FOLLOW errors. There is at most 1 production in each  
+table entry. 
+
+# Ambiguous Grammar?
+
+Since the grammar is an LL(1) grammar, it is unabmiguous by definition.
+
+# LEXEME PROCESSOR
+
+![lexer.py](./lexer.py) is a program that processes all lexemes in a  
+given file and produces a list of all lexemes in order, along with  
+their token codes and definitions. Examples of a valid and a failed  
+input are shown below. 
+
+# SYNTAX ANALYZER
+
+![syntax_analyzer.py](./syntax_analyzer.py) is a program that is  
+automatically called when the lexer succedes. It checks if the program  
+is valid syntactically, and throws an error when it detects an  
+invalid program.
 
 # example valid output of lexical processor
 ```
@@ -97,4 +118,51 @@ Lexeme at index  1 is: huge      Token is ( 5) 8 byte integer declaration
 Lexeme at index  2 is: var_aa    Token is (28) variable
 Lexeme at index  3 is: |         Token is (24) separator
 lexeme at index  4 is invalid
+```
+Lexer is stopped when an invalid token is encountered
+
+# Test1.txt (5 Lexical Errors)
+```
+Error 1: on line 3 variable_name is greater than 8 characters.
+Error 2: on line 4 var_a is too short of a variable name.
+Error 3: on line 6 ; doesnt match any symbols and is not a valid
+integer or variable name (should be '|').
+Error 4: on line 10 [ is not a valid symbol (should be '(')
+Error 5: on line 10 ] is not a valid symbol (should be ')')
+```
+
+# Test2.txt (5 Syntax Errors)
+```
+Error 1: on line 2, assignment is being attempted on the same
+line as initialization.
+Error 2: on line 3, there is a missing mathematical operator,
+an extra space, or an extra 3 at (1 + 2 / 3 3).
+Error 3: on line 4, in the conditional an assignment symbol is
+used instead of an equality symbol.
+Error 4: on line 5, there is no statement terminator
+Error 5: on line 6/7 there is a missing 'end' symbol.
+```
+
+# Test3.txt and Test4.txt (lexically and syntactically correct)
+```
+Test3.txt output:
+...
+Lexeme at index 32 is: (         Token is (22) left paren
+Lexeme at index 33 is: var_aa    Token is (28) variable
+Lexeme at index 34 is: <         Token is (17) lessthan
+Lexeme at index 35 is: 50        Token is (27) integer
+Lexeme at index 36 is: )         Token is (23) right paren
+Lexeme at index 37 is: end       Token is ( 1) program ending
+syntax analysis passed
+
+
+Test4.txt output:
+...
+Lexeme at index 27 is: variable  Token is (28) variable
+Lexeme at index 28 is: )         Token is (23) right paren
+Lexeme at index 29 is: )         Token is (23) right paren
+Lexeme at index 30 is: |         Token is (24) separator
+Lexeme at index 31 is: }         Token is (26) right bracket
+Lexeme at index 32 is: end       Token is ( 1) program ending
+syntax analysis passed
 ```
