@@ -75,7 +75,7 @@ Perform pairwise disjoint test on above grammar:
  . For example: the FIRST() sets for the RHS of &lt;statement&gt; would  
  be FIRST(&lt;if&gt;) = {?}, FIRST(&lt;while&gt;) = {conloop}, FIRST(&lt;do&gt;) = {perform},  
  FIRST(&lt;initialize&gt;) = {tiny, medi, big, huge}, FIRST(&lt;assignment&gt;) =  
- {[a-zA-Z_{6,8}]}. none of these FIRST sets overlap. This is true of  
+ {'some var name'}. none of these FIRST sets overlap. This is true of  
  any rule in the grammar
 
 Infinite recursion test:  
@@ -190,6 +190,27 @@ syntax analysis passed
 
 # LR(1) Parse Table
 
+Note that &lt;statement&gt; --> &lt;if&gt; | &lt;while&gt; | &lt;do&gt; |&lt;initialize&gt; | &lt;assignment&gt;  
+is expanded to:  
+```
+STATEMENT -> IF
+STATEMENT -> IF STATEMENT
+STATEMENT -> WHILE
+STATEMENT -> WHILE STATEMENT
+STATEMENT -> DO
+STATEMENT -> DO STATEMENT
+STATEMENT -> INIT
+STATEMENT -> INIT STATEMENT
+STATEMENT -> ASSIGN
+STATEMENT -> ASSIGN STATEMENT
+```
+This is because &lt;block&gt; --> 'start' {&lt;statement&gt;} 'end'  
+has between 0 and infinite &lt;statement&gt; calls. Since this  
+parser looks ahead 1 token and is a pairwise disjoint we can safely  
+determine if we parse another token as an if, while, do, initialization,  
+assignment, or another statement. This is done to all '0 or more'  
+rules in the grammar. 
+
 ```
 BLOCK -> start STATEMENT end
 STATEMENT -> IF
@@ -205,11 +226,11 @@ STATEMENT -> ASSIGN STATEMENT
 IF -> ? ( BEXPR ) { STATEMENT }
 WHILE -> conloop ( BEXPR ) { STATEMENT }
 DO -> perform { STATEMENT } ( BEXPR )
-INIT -> tiny [a-z]* |
-INIT -> medi [a-z]* |
-INIT -> big [a-z]* |
-INIT -> huge [a-z]* |
-ASSIGN -> [a-z]* = EXPR |
+INIT -> tiny variable |
+INIT -> medi variable |
+INIT -> big variable |
+INIT -> huge variable |
+ASSIGN -> variable = EXPR |
 BEXPR -> BREL == BREL
 BEXPR -> BREL != BREL
 BEXPR -> BREL
@@ -228,8 +249,8 @@ TERM -> BNOT ^ BNOT
 TERM -> BNOT
 BNOT -> ! FACTOR
 BNOT -> FACTOR
-FACTOR -> 5
-FACTOR -> var
+FACTOR -> 123
+FACTOR -> variable
 FACTOR -> ( BEXPR )
 ```
 
