@@ -209,7 +209,11 @@ has between 0 and infinite &lt;statement&gt; calls. Since this
 parser looks ahead 1 token and is a pairwise disjoint we can safely  
 determine if we parse another token as an if, while, do, initialization,  
 assignment, or another statement. This is done to all '0 or more'  
-rules in the grammar. 
+rules in the grammar.  
+
+Further, regex is replaced with valid filler text because the ambiguity  
+between variable names and keywords present in the grammar is handled  
+beforehand by the lexer. 
 
 ```
 BLOCK -> start STATEMENT end
@@ -249,7 +253,7 @@ TERM -> BNOT ^ BNOT
 TERM -> BNOT
 BNOT -> ! FACTOR
 BNOT -> FACTOR
-FACTOR -> 123
+FACTOR -> 5B
 FACTOR -> variable
 FACTOR -> ( BEXPR )
 ```
@@ -264,23 +268,133 @@ FACTOR -> ( BEXPR )
 ![LR Table 5](./img/LR_Table_8.PNG)  
 # Traces
 
-![LR Trace 1](./img/LR_Trace_1.PNG)  
-Valid Trace, all tokens are accepted by the parser  
-  
-![LR Trace 2](./img/LR_Trace_2.PNG)  
-![LR Trace 2](./img/LR_Trace_2_1.PNG)  
-Valid Trace, all tokens are accepted by the parser  
-  
-![LR Trace 3](./img/LR_Trace_3.PNG)  
-Valid Trace, all tokens are accepted by the parser  
-  
-![LR Trace 4](./img/LR_Trace_4.PNG)  
-This Trace fails when the parser expects a | symbol  
-but is instead met with an assignment symbol (=).  
-variable initialization and assignment must be on  
-different lines.  
-  
-![LR Trace 5](./img/LR_Trace_5.PNG)  
-This Trace fails when the parser expects a { symbol
-but instead finds 'end', if statements require braces  
+Trace 1  
+```
+start
+	variable = 5B |
+end
+```
+```
+<block>
+--> 'start'               \** accept token: 'start'
+--> <statement>
+--> <assignment>
+--> 'variable'            \** accept token: 'variable'
+--> '='                   \** accept token: '='
+--> <expr>
+--> <term>
+--> <bnot>
+--> <factor>
+--> '5B'                  \** accept token: '5B'
+>return to <assignment><
+--> '|'                   \** accept token: '|'
+>return to <block><
+--> 'end'                 \** accept token: 'end'
+>last token accepted<
+```
+
+Trace 2  
+```
+start
+	? ( variable == variable ) {
+		variable = 5B |
+	}
+end
+```
+```
+<block>
+--> 'start'               \** accept token: 'start'
+--> <statement>
+--> <if>
+--> '?'                   \** accept token: '?'
+--> '('                   \** accept token: '('
+--> <bool_relation>
+--> <bexpr>
+--> <expr>
+--> <term>
+--> <bnot>
+--> <factor>
+--> 'variable'            \** accept token: 'variable'
+--> >return to <bool_relation><
+--> '=='                  \** accept token: '=='
+--> <bexpr>
+--> <expr>
+--> <term>
+--> <bnot>
+--> <factor>
+--> 'variable'            \** accept token: 'variable'
+--> >return to <if><
+--> ')'                   \** accept token: ')'
+--> '{'                   \** accept token: '{'
+--> <statement>
+--> <assignment>
+--> 'variable'            \** accept token: 'variable'
+--> '='                   \** accept token: '='
+--> <expr>
+--> <term>
+--> <bnot>
+--> <factor>
+--> '5B'                  \** accept token: '5B'
+>return to <assignment><
+--> '|'                   \** accept token: '|'
+>return to <if><
+--> '}'                   \** accept token: '}'
+>return to <block><
+--> 'end'                 \** accept token: 'end'
+>last token accepted<
+```
+
+Trace 3  
+```
+start
+	big variable = 5B |
+end
+```
+```
+<block>
+--> 'start'               \** accept token: 'start'
+--> <statement>
+--> <initialize>
+--> 'big'                 \** accept token: 'big'
+--> 'variable'            \** accept token: 'variable'
+--> '='                   \** reject token: '=' was expecting '|'
+```
+This Trace fails when the parser expects a | symbol
+but is instead met with an assignment symbol (=).
+variable initialization and assignment must be on
+different lines.
+
+Trace 4
+```
+start 
+	? ( variable == 5B )
+end
+```
+```
+<block>
+--> 'start'               \** accept token: 'start'
+--> <statement>
+--> <if>
+--> '?'                   \** accept token: '?'
+--> '('                   \** accept token: '('
+--> <bool_relation>
+--> <bexpr>
+--> <expr>
+--> <term>
+--> <bnot>
+--> <factor>
+--> 'variable'            \** accept token: 'variable'
+--> >return to <bool_relation><
+--> '=='                  \** accept token: '=='
+--> <bexpr>
+--> <expr>
+--> <term>
+--> <bnot>
+--> <factor>
+--> '5B'                  \** accept token: '5B'
+--> >return to <if><
+--> ')'                   \** accept token: ')'
+--> 'end'                 \** reject token: 'end' was expecting '{'
+```
+This Trace fails when the parser expects a { symbol but instead finds 'end', if statements require braces
 with statements inside.
