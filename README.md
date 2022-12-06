@@ -72,8 +72,8 @@ exponent, multiply, divide, modulus)
 Perform pairwise disjoint test on above grammar:  
  . If a terminal has more than one option on the RHS, the FIRST() sets  
  of each option do not overlap.
- . For example: the FIRST() sets for the RHS of &lt;statement&gt; would be  
- FIRST(&lt;if&gt;) = {?}, FIRST(&lt;while&gt;) = {conloop}, FIRST(&lt;do&gt;) = {perform},  
+ . For example: the FIRST() sets for the RHS of &lt;statement&gt; would  
+ be FIRST(&lt;if&gt;) = {?}, FIRST(&lt;while&gt;) = {conloop}, FIRST(&lt;do&gt;) = {perform},  
  FIRST(&lt;initialize&gt;) = {tiny, medi, big, huge}, FIRST(&lt;assignment&gt;) =  
  {[a-zA-Z_{6,8}]}. none of these FIRST sets overlap. This is true of  
  any rule in the grammar
@@ -82,7 +82,7 @@ Infinite recursion test:
  . No direct recursion. Each rule in my rule set does not immediately  
  call itself on the LHS of the rule. No rule only has an option with  
  the itself as a terminal, always the option of a different terminal  
- or ending.
+ or ending.  
  . No indirect recursion. Tracing from any terminal does not eventually  
  lead to another terminal of the same type without the option of going  
  to a different terminal or terminating the trace.
