@@ -38,8 +38,8 @@ class RDA:
 	# returns true the current token integer is a number
 	# returns false otherwise
 	def validate_int(self):
-		if re.findall('[0-9]+', self.currToken) != []:
-			return re.findall('[0-9]+', self.currToken)[0] == self.currToken
+		if re.findall('[0-9]+[tmBH]?', self.currToken) != []:
+			return re.findall('[0-9]+[tmBH]?', self.currToken)[0] == self.currToken
 		return False
 
 
@@ -268,7 +268,7 @@ class RDA:
 		self.factor()
 
 
-	# <factor> --> [0-9]+ | [a-zA-Z_]{6,8} | '(' <bexpr> ')'
+	# <factor> --> [0-9]+[tmBH]? | [a-zA-Z_]{6,8} | '(' <bexpr> ')'
 	def factor(self):
 		if self.validate_var() or self.validate_int():
 			self.nextToken()

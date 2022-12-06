@@ -31,22 +31,26 @@ def main():
 		24: "separator",
 		25: "left bracket",
 		26: "right bracket",
-		27: "integer",
-		28: "variable"
+		27: "1 byte integer",
+		28: "2 byte integer",
+		29: "4 byte integer",
+		30: "8 byte integer",
+		31: "variable"
 	}
 
 	# initialize list of tokens
 	tokens = []
 
 	# get the code file to be tested
-	test_1 = open("test4.txt", "r")
+	test_1 = open("test3.txt", "r")
 	
 	# regex separated into individual matching groups for readability
 	# each group directly corresponds to a single token code
 	symbols = ["(start)", "(end)", "(tiny)", "(medi)", "(big)", "(huge)",
 	 "(conloop)", "(forloop)", "(perform)", "(\?)", "(\+)", "(-)", "(\*)",
 	 "(\/)", "(%)", "(<=)", "(>=)", "(<)", "(>)", "(==)", "(\!=)", "(=)",
-	 "(\()", "(\))", "(\|)", "(\{)", "(\})", "([0-9]+)", "([a-zA-Z_]{6,8})"]
+	 "(\()", "(\))", "(\|)", "(\{)", "(\})", "([0-9]+t)", "([0-9]+m)",
+	 "([0-9]+B)", "([0-9]+H)", "([a-zA-Z_]{6,8})"]
 
 	# read the test code file
 	file = test_1.read()

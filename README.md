@@ -1,6 +1,11 @@
 # PLC Test 2
 # Regular Expressions
-(start)|(end)|(tiny)|(medi)|(big)|(huge)|(conloop)|(forloop)|(perform)|(\?)|(\+)|(-)|(\*)|(\/)|(%)|(<=)|(>=)|(<)|(>)|(==)|(\!=)|(=)|(\()|(\))|(\|)|(\{)|(\})|([0-9]+)|([a-zA-Z_]{6,8})
+```
+(start)|(end)|(tiny)|(medi)|(big)|(huge)|(conloop)|(forloop)|
+(perform)|(\?)|(\+)|(-)|(\*)|(\/)|(%)|(<=)|(>=)|(<)|(>)|(==)|
+(\!=)|(=)|(\()|(\))|(\|)|(\{)|(\})|([0-9]+t)|([0-9]+m)|([0-9]
++B)|([0-9]+H)|([a-zA-Z_]{6,8})
+```
 
 regular expression matches keywords, symbols, and variable names in separate  
 matching groups. tiny is my equivalent of a 1 byte int, medi is a 2  
@@ -37,8 +42,11 @@ separator.
 24: "separator"  
 25: "left bracket"  
 26: "right bracket"  
-27: "integer"  
-28: "variable"  
+27: "1 byte integer"  
+28: "2 byte integer"  
+29: "4 byte integer"  
+30: "8 byte integer"  
+31: "variable"  
 
 # production rules
 
@@ -54,17 +62,30 @@ separator.
 &lt;expr&gt; --> &lt;term&gt; {'\*'|'/'|'%' &lt;term&gt;}  
 &lt;term&gt; --> &lt;bnot&gt; {'+'|'-'|'^' &lt;bnot&gt;}  
 &lt;bnot&gt; --> [!] &lt;factor&gt;  
-&lt;factor&gt; --> [0-9]+ | [a-zA-Z_]{6,8} | '(' &lt;bexpr&gt; ')'  
+&lt;factor&gt; --> [0-9]+[tmBH]? | [a-zA-Z_]{6,8} | '(' &lt;bexpr&gt; ')'  
   
 order of operations is PASEMDO (parentheses, addition, subtraction,  
 exponent, multiply, divide, modulus)
 
 # LL grammar
 
-![LL Table](./img/LL_Table.PNG)  
-in the above image I have created a LL(1) table showing that there are no  
-FIRST/FIRST or FIRST/FOLLOW errors. There is at most 1 production in each  
-table entry. 
+Perform pairwise disjoint test on above grammar:  
+ . If a terminal has more than one option on the RHS, the FIRST() sets  
+ of each option do not overlap.
+ . For example: the FIRST() sets for the RHS of &lt;statement&gt; would be  
+ FIRST(&lt;if&gt;) = {?}, FIRST(&lt;while&gt;) = {conloop}, FIRST(&lt;do&gt;) = {perform},  
+ FIRST(&lt;initialize&gt;) = {tiny, medi, big, huge}, FIRST(&lt;assignment&gt;) =  
+ {[a-zA-Z_{6,8}]}. none of these FIRST sets overlap. This is true of  
+ any rule in the grammar
+
+Infinite recursion test:  
+ . No direct recursion. Each rule in my rule set does not immediately  
+ call itself on the LHS of the rule. No rule only has an option with  
+ the itself as a terminal, always the option of a different terminal  
+ or ending.
+ . No indirect recursion. Tracing from any terminal does not eventually  
+ lead to another terminal of the same type without the option of going  
+ to a different terminal or terminating the trace.
 
 # Ambiguous Grammar?
 
@@ -184,11 +205,11 @@ STATEMENT -> ASSIGN STATEMENT
 IF -> ? ( BEXPR ) { STATEMENT }
 WHILE -> conloop ( BEXPR ) { STATEMENT }
 DO -> perform { STATEMENT } ( BEXPR )
-INIT -> tiny var |
-INIT -> medi var |
-INIT -> big var |
-INIT -> huge var |
-ASSIGN -> var = EXPR |
+INIT -> tiny [a-z]* |
+INIT -> medi [a-z]* |
+INIT -> big [a-z]* |
+INIT -> huge [a-z]* |
+ASSIGN -> [a-z]* = EXPR |
 BEXPR -> BREL == BREL
 BEXPR -> BREL != BREL
 BEXPR -> BREL
