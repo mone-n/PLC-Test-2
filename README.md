@@ -71,7 +71,7 @@ exponent, multiply, divide, modulus)
 
 Perform pairwise disjoint test on above grammar:  
  . If a terminal has more than one option on the RHS, the FIRST() sets  
- of each option do not overlap.
+ of each option do not overlap.  
  . For example: the FIRST() sets for the RHS of &lt;statement&gt; would  
  be FIRST(&lt;if&gt;) = {?}, FIRST(&lt;while&gt;) = {conloop}, FIRST(&lt;do&gt;) = {perform},  
  FIRST(&lt;initialize&gt;) = {tiny, medi, big, huge}, FIRST(&lt;assignment&gt;) =  
