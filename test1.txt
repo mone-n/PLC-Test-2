@@ -1,11 +1,11 @@
 start
   tiny var_aa|
   big variable_name|
-  var_a = ( 1 + 2 / 3 ) % 12 / 2|
+  var_a = ( 1B + 2B / 3B ) % 12B / 2B|
   perform {
-    var_aa == var_aa + 1;
-    ? (var_aa == 5) {
-      var_aa = 99|
+    var_aa == var_aa + 1B;
+    ? (var_aa == 5B) {
+      var_aa = 99B|
     }
-  } conloop [ var_aa <= 50 ]
+  } conloop [ var_aa <= 50B ]
 end

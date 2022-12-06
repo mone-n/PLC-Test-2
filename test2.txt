@@ -1,6 +1,6 @@
 start
-  tiny variable = 5|
-  variable = ( 1 + 2 / 3 3) % 12 / 2|
-  ? ( variable = 100 ) {
-    variable = variable + 1
+  tiny variable = 5B|
+  variable = ( 1B + 2B / 3B 3B) % 12B / 2B|
+  ? ( variable = 100B ) {
+    variable = variable + 1B
   }
