@@ -93,14 +93,14 @@ Since the grammar is an LL(1) grammar, it is unabmiguous by definition.
 
 # LEXEME PROCESSOR
 
-![lexer.py](./img/lexer.py) is a program that processes all lexemes in a  
+![lexer.py](./lexer.py) is a program that processes all lexemes in a  
 given file and produces a list of all lexemes in order, along with  
 their token codes and definitions. Examples of a valid and a failed  
 input are shown below. 
 
 # SYNTAX ANALYZER
 
-![syntax_analyzer.py](./img/syntax_analyzer.py) is a program that is  
+![syntax_analyzer.py](./syntax_analyzer.py) is a program that is  
 automatically called when the lexer succedes. It checks if the program  
 is valid syntactically, and throws an error when it detects an  
 invalid program.
